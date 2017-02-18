@@ -1,5 +1,5 @@
 sher_kar_two_eventboss = Creature:new {
-	customName = "Sher Kar (BOSS)",
+	customName = "Sher Kar (Boss)",
 	socialGroup = "geonosian_creature",
 	pvpFaction = "",
 	faction = "",

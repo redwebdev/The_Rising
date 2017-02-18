@@ -1,5 +1,5 @@
 sher_kar_eventboss = Creature:new {
-	customName = "Sher Kar (BOSS)",
+	customName = "Sher Kar (Boss)",
 	socialGroup = "geonosian_creature",
 	pvpFaction = "",
 	faction = "",
@@ -9,8 +9,8 @@ sher_kar_eventboss = Creature:new {
 	damageMax = 2550,
 	specialDamageMult = 25,
 	baseXp = 3005409,
-	baseHAM = 4400000,
-	baseHAMmax = 5629000,
+	baseHAM = 100000,
+	baseHAMmax = 110000,
 	armor = 3,
 	resists = {30,30,30,30,30,30,30,30,30},
 	meatType = "",
