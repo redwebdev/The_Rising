@@ -7,11 +7,8 @@ includeFile("custom_content/ghomrassen/serverobjects.lua")
 includeFile("custom_content/screenplay_mobs/serverobjects.lua")
 includeFile("custom_content/som/serverobjects.lua")
 includeFile("custom_content/nightwing/serverobjects.lua")
-
+includeFile("custom_content/events/serverobjects.lua")
 
 
 
 --Root Folder
-
-
-

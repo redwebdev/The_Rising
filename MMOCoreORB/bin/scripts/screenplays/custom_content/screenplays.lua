@@ -34,5 +34,8 @@ includeFile("hondo/merchants/helper_u8l7.lua")
 includeFile("hondo/merchants/weapons_yivvits.lua")
 includeFile("hondo/merchants/john_connor.lua")
 
+-- Events
+includeFile("custom_content/events/sherKarEvent.lua")
+
 --POI
 --includeFile("custom_content/poi/ghomrassen_imperial_outpost.lua")
