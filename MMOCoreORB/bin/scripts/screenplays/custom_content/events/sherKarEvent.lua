@@ -11,7 +11,8 @@ SherKarScreenPlay = ScreenPlay:new {
 	-- terminal vars
   terminalModal = "object/tangible/dungeon/terminal_free_s1.iff",
 	terminalName = "Volcanic Testing Unit",
-	terminalLocation = {2878.32, 304.89, -4734.3, 0, -0.5, 0, 0.866025, 0},
+  -- (planet, modal, x, z, y, cellID?, ow, ?, oy, ?)
+	terminalLocation = {2878.32, 304.78, -4734.3, 0, -0.5, 0, 0.866025, 0},
 
 	-- lair and minion vars
 	younglingTemplate = "sher_kar_youngling_eventminion",
