@@ -18,6 +18,7 @@ SherKarScreenPlay = ScreenPlay:new {
 	younglingTemplate = "sher_kar_youngling_eventminion",
 	adultTemplate = "sher_kar_adolescent_eventminion",
 	lairModal = "object/static/destructible/destructible_cave_wall_damprock.iff",
+  lairHealth = 200000,
   spawnLocations = {
     {2879.41, 290, -4702.47, 0, 1, 0, 0, 0},
     {2966.51, 290, -4610.18, 0, 1, 0, 0, 0},
@@ -165,9 +166,16 @@ function SherKarScreenPlay:startPhaseTwo(pSherKar, pPlayer)
 	local locTwo = self.spawnLocations[2]
 
 	spawnedPointer = spawnSceneObject("lok", self.lairModal, locOne[1], locOne[2], locOne[3], locOne[4], locOne[5], locOne[6], locOne[7], locOne[8])
-	TangibleObject(spawnedPointer):setMaxCondition(1000000, false)
+	TangibleObject(spawnedPointer):setMaxCondition(self.lairHealth)
+  --spawnedSceneObject:_setObject(spawnedPointer)
+	--spawnedSceneObject:setCustomObjectName("Younglings Lair")
+  createObserver(OBJECTDESTRUCTION, "SherKarScreenPlay", "onLairDestroyed", spawnedPointer)
+
 	spawnedPointer = spawnSceneObject("lok", self.lairModal, locTwo[1], locTwo[2], locTwo[3], locTwo[4], locTwo[5], locTwo[6], locTwo[7], locTwo[8])
-	TangibleObject(spawnedPointer):setMaxCondition(1000000, false)
+	TangibleObject(spawnedPointer):setMaxCondition(self.lairHealth)
+  --spawnedSceneObject:_setObject(spawnedPointer)
+	--spawnedSceneObject:setCustomObjectName("Younglings Lair")
+  createObserver(OBJECTDESTRUCTION, "SherKarScreenPlay", "onLairDestroyed", spawnedPointer)
 
 	return 0
 end
@@ -205,6 +213,15 @@ function SherKarScreenPlay:startPhaseFour(pSherKar, pPlayer)
 	createObserver(OBJECTDESTRUCTION, "SherKarScreenPlay", "killed", sherKar)
 
 	return 0
+end
+
+function SherKarScreenPlay:onLairDestroyed(pLairObject, pKiller, nothing)
+  if (pLairObject == nil or pKiller == nil) then
+    return 1
+  end
+  SceneObject(pLairObject):destroyObjectFromWorld()
+
+  return 1
 end
 
 function SherKarScreenPlay:shuffleSpawns()
