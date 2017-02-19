@@ -162,16 +162,24 @@ function SherKarScreenPlay:startPhaseTwo(pSherKar, pPlayer)
   local locTwo = self.spawnLocations[2]
 
   spawnedPointer = spawnSceneObject("lok", self.lairModal, locOne[1], locOne[2], locOne[3], locOne[4], locOne[5], locOne[6], locOne[7], locOne[8])
-  TangibleObject(spawnedPointer):setMaxCondition(self.lairHealth)
-  --spawnedSceneObject:_setObject(spawnedPointer)
-  --spawnedSceneObject:setCustomObjectName("Younglings Lair")
-  createObserver(OBJECTDESTRUCTION, "SherKarScreenPlay", "onLairDestroyed", spawnedPointer)
+	if spawnedPointer ~= nil then
+		spawnedSceneObject = TangibleObject(spawnedPointer)
+		spawnedSceneObject:setMaxCondition(self.lairHealth)
+		spawnedSceneObject:setFaction("")
+		spawnedSceneObject:setPvpStatusBitmask(1)
+
+		createObserver(OBJECTDESTRUCTION, "SherKarScreenPlay", "onLairDestroyed", spawnedPointer)
+	end
 
   spawnedPointer = spawnSceneObject("lok", self.lairModal, locTwo[1], locTwo[2], locTwo[3], locTwo[4], locTwo[5], locTwo[6], locTwo[7], locTwo[8])
-  TangibleObject(spawnedPointer):setMaxCondition(self.lairHealth)
-  --spawnedSceneObject:_setObject(spawnedPointer)
-  --spawnedSceneObject:setCustomObjectName("Younglings Lair")
-  createObserver(OBJECTDESTRUCTION, "SherKarScreenPlay", "onLairDestroyed", spawnedPointer)
+	if spawnedPointer ~= nil then
+		spawnedSceneObject = TangibleObject(spawnedPointer)
+		spawnedSceneObject:setMaxCondition(self.lairHealth)
+		spawnedSceneObject:setFaction("")
+		spawnedSceneObject:setPvpStatusBitmask(1)
+
+		createObserver(OBJECTDESTRUCTION, "SherKarScreenPlay", "onLairDestroyed", spawnedPointer)
+	end
 
   return 0
 end
