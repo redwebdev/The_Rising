@@ -17,8 +17,8 @@ SherKarScreenPlay = ScreenPlay:new {
   -- lair and minion vars
   younglingTemplate = "sher_kar_youngling_eventminion",
   adultTemplate = "sher_kar_adolescent_eventminion",
-  --lairModal = "object/static/destructible/destructible_cave_wall_damprock.iff",
-	lairModal = "object/tangible/lair/base/poi_all_lair_rock_shelter_large.iff",
+  lairModal = "object/static/destructible/destructible_cave_wall_damprock.iff",
+	--lairModal = "object/tangible/lair/base/poi_all_lair_rock_shelter_large.iff",
   lairHealth = 200000,
   spawnLocations = {
     {2879.41, 290, -4702.47, 0, 1, 0, 0, 0},
@@ -106,7 +106,7 @@ function SherKarScreenPlay:phaseCheck(pSherKar, pPlayer)
   if (bossPercent <= 50) and (currentPhase == 2) then
     spatialChat(pSherKar, self.eventPhaseThreeMessage)
     writeData("sher_kar_event:event_phase", 3)
-    --self:startPhaseThree(pSherKar, pPlayer)
+    self:startPhaseThree(pSherKar, pPlayer)
 
     return 0
   end
@@ -114,7 +114,7 @@ function SherKarScreenPlay:phaseCheck(pSherKar, pPlayer)
   if (bossPercent <= 25) and (currentPhase == 3) then
     spatialChat(pSherKar, self.eventPhaseFourMessage)
     writeData("sher_kar_event:event_phase", 4)
-    --self:startPhaseFour(pSherKar, pPlayer)
+    self:startPhaseFour(pSherKar, pPlayer)
 
     return 0
   end
@@ -156,54 +156,24 @@ end
 
 function SherKarScreenPlay:startPhaseTwo(pSherKar, pPlayer)
   self:shuffleSpawns()
-  local spawnedPointer
-  local spawnedSceneObject
-  local locOne = self.spawnLocations[1]
-  local locTwo = self.spawnLocations[2]
-
-  spawnedPointer = spawnSceneObject("lok", self.lairModal, locOne[1], locOne[2], locOne[3], locOne[4], locOne[5], locOne[6], locOne[7], locOne[8])
-	if spawnedPointer ~= nil then
-		spawnedSceneObject = TangibleObject(spawnedPointer)
-		spawnedSceneObject:setMaxCondition(self.lairHealth)
-		spawnedSceneObject:setFaction("")
-		spawnedSceneObject:setPvpStatusBitmask(1)
-
-		createObserver(OBJECTDESTRUCTION, "SherKarScreenPlay", "onLairDestroyed", spawnedPointer)
-	end
-
-  spawnedPointer = spawnSceneObject("lok", self.lairModal, locTwo[1], locTwo[2], locTwo[3], locTwo[4], locTwo[5], locTwo[6], locTwo[7], locTwo[8])
-	if spawnedPointer ~= nil then
-		spawnedSceneObject = TangibleObject(spawnedPointer)
-		spawnedSceneObject:setMaxCondition(self.lairHealth)
-		spawnedSceneObject:setFaction("")
-		spawnedSceneObject:setPvpStatusBitmask(1)
-
-		createObserver(OBJECTDESTRUCTION, "SherKarScreenPlay", "onLairDestroyed", spawnedPointer)
-	end
+	local lairID1 = self:spawnLair(self.spawnLocations[1])
+	local lairID2 = self:spawnLair(self.spawnLocations[2])
+	writeData("sher_kar_event:lair_one", lairID1)
+  writeData("sher_kar_event:lair_two", lairID2)
+	self:spawnMinionsOne()
+	self:spawnMinionsTwo()
 
   return 0
 end
 
 function SherKarScreenPlay:startPhaseThree(pSherKar, pPlayer)
-  local spawnedPointer
-  local spawnedSceneObject
-  local locOne = self.spawnLocations[3]
+	local locOne = self.spawnLocations[3]
   local locTwo = self.spawnLocations[4]
-  local minionOne
-  local minionTwo
+	local lairID1 = self:spawnLair(locOne)
+	local lairID2 = self:spawnLair(locTwo)
 
-  spawnedPointer = spawnSceneObject("lok", self.lairModal, locOne[1], locOne[2], locOne[3], locOne[4], locOne[5], locOne[6], locOne[7], locOne[8])
-  --spawnedSceneObject:_setObject(spawnedPointer)
-  --spawnedSceneObject:setCustomObjectName("Adolescent Lair")
-  minionOne = spawnMobile("lok", self.adultTemplate, locOne[1], locOne[2], locOne[3], locOne[4], locOne[5], locOne[6])
-  --ObjectManager.withCreatureObject(minionOne, function(add)
-  -- add:engageCombat(pPlayer)
-  --end)
-
-  spawnedPointer = spawnSceneObject("lok", self.lairModal, locTwo[1], locTwo[2], locTwo[3], locTwo[4], locTwo[5], locTwo[6], locTwo[7], locTwo[8])
-  --spawnedSceneObject:_setObject(spawnedPointer)
-  --spawnedSceneObject:setCustomObjectName("Adolescent Lair")
-  minionTwo = spawnMobile("lok", self.adultTemplate, locTwo[1], locTwo[2], locTwo[3], locTwo[4], locTwo[5], locTwo[6])
+  local minionOne = spawnMobile("lok", self.adultTemplate, locOne[1], locOne[2], locOne[3], locOne[4], locOne[5], locOne[6])
+  local minionTwo = spawnMobile("lok", self.adultTemplate, locTwo[1], locTwo[2], locTwo[3], locTwo[4], locTwo[5], locTwo[6])
   --ObjectManager.withCreatureObject(minionTwo, function(add)
   -- add:engageCombat(pPlayer)
   --end)
@@ -219,13 +189,36 @@ function SherKarScreenPlay:startPhaseFour(pSherKar, pPlayer)
   return 0
 end
 
+function SherKarScreenPlay:spawnLair(pLoc)
+	local spawnedPointer = spawnSceneObject("lok", self.lairModal, pLoc[1], pLoc[2], pLoc[3], pLoc[4], pLoc[5], pLoc[6], pLoc[7], pLoc[8])
+	if spawnedPointer ~= nil then
+		local ID = SceneObject(spawnedPointer):getObjectID()
+		TangibleObject(spawnedPointer):setMaxCondition(self.lairHealth)
+		createObserver(OBJECTDESTRUCTION, "SherKarScreenPlay", "onLairDestroyed", spawnedPointer)
+
+		return ID
+	end
+
+	return 0
+end
+
 function SherKarScreenPlay:onLairDestroyed(pLairObject, pKiller, nothing)
   if (pLairObject == nil or pKiller == nil) then
     return 1
   end
+	local ID = SceneObject(pLairObject):getObjectID()
   SceneObject(pLairObject):destroyObjectFromWorld()
+	local lair1 = readData("sher_kar_event:lair_one")
+	local lair2 = readData("sher_kar_event:lair_two")
 
-  return 1
+	if (ID == lair1) then
+		writeData("sher_kar_event:lair_one", 0)
+	end
+
+	if (ID == lair2) then
+		writeData("sher_kar_event:lair_two", 0)
+	end
+
 end
 
 function SherKarScreenPlay:shuffleSpawns()
@@ -252,7 +245,7 @@ end
 function SherKarScreenPlay:spawnMinionsTwo()
   local lair = readData("sher_kar_event:lair_two")
   if (lair ~= 0) then
-    self:spawnMinion(self.spawnLocations[1])
+    self:spawnMinion(self.spawnLocations[2])
     createEvent(self.younglingWaveTimer, "SherKarScreenPlay", "spawnMinionsTwo", "", "")
   end
 
