@@ -45,6 +45,7 @@ function SherKarScreenPlay:start()
 	if (isZoneEnabled("lok")) then
 		print("Sher Kar Loaded")
 		self:spawnObjects()
+		self:resetData()
 	end
 end
 
@@ -61,12 +62,10 @@ function SherKarScreenPlay:spawnObjects()
 	if (spawnedPointer ~= nil) then
 		createObserver(OBJECTRADIALUSED, "SherKarScreenPlay", "terminalUsed", spawnedPointer);
 	end
+end
 
-	writeData("sher_kar_event:event_started", 0)
-	writeData("sher_kar_event:event_phase", 1)
-	writeData("sher_kar_event:event_oncd", 0)
-	writeData("sher_kar_event:lair_one", 0)
-	writeData("sher_kar_event:lair_two", 0)
+function SherKarScreenPlay:resetData()
+
 end
 
 function SherKarScreenPlay:terminalUsed(pTerminal, pPlayer, radialSelected)
@@ -261,8 +260,7 @@ end
 
 function SherKarScreenPlay:killed()
 	print("SherKar Killed")
-
-	writeData("sher_kar_event:event_started", 0)
+	
 	writeData("sher_kar_event:event_oncd", 1)
 	createEvent(self.killResetTimer, "SherKarScreenPlay", "resetEvent", "", "")
 
@@ -272,6 +270,7 @@ end
 function SherKarScreenPlay:resetEvent()
 	print("SherKar Reset")
 
+	writeData("sher_kar_event:event_started", 0)
 	writeData("sher_kar_event:event_phase", 1)
 	writeData("sher_kar_event:event_oncd", 0)
 	writeData("sher_kar_event:lair_one", 0)
