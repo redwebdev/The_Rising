@@ -190,11 +190,15 @@ function SherKarScreenPlay:startPhaseFour(pSherKar, pPlayer)
 end
 
 function SherKarScreenPlay:spawnLair(pLoc)
+	local spawnedSceneObject = LuaSceneObject(nil)
 	local spawnedPointer = spawnSceneObject("lok", self.lairModal, pLoc[1], pLoc[2], pLoc[3], pLoc[4], pLoc[5], pLoc[6], pLoc[7], pLoc[8])
+
 	if spawnedPointer ~= nil then
 		local ID = SceneObject(spawnedPointer):getObjectID()
 		TangibleObject(spawnedPointer):setMaxCondition(self.lairHealth)
 		createObserver(OBJECTDESTRUCTION, "SherKarScreenPlay", "onLairDestroyed", spawnedPointer)
+		spawnedSceneObject:_setObject(spawnedPointer)
+	  spawnedSceneObject:setCustomObjectName("Lair")
 
 		return ID
 	end
