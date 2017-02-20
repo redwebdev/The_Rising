@@ -16,7 +16,9 @@ SherKarScreenPlay = ScreenPlay:new {
 
   -- lair and minion vars
   younglingTemplate = "sher_kar_youngling_eventminion",
+	younglingLairName = "Youngling Lair",
   adultTemplate = "sher_kar_adolescent_eventminion",
+	adultLairName = "Adolescent Lair",
   lairModal = "object/static/destructible/destructible_cave_wall_damprock.iff",
 	--lairModal = "object/tangible/lair/base/poi_all_lair_rock_shelter_large.iff",
   lairHealth = 200000,
@@ -156,8 +158,8 @@ end
 
 function SherKarScreenPlay:startPhaseTwo(pSherKar, pPlayer)
   self:shuffleSpawns()
-	local lairID1 = self:spawnLair(self.spawnLocations[1])
-	local lairID2 = self:spawnLair(self.spawnLocations[2])
+	local lairID1 = self:spawnLair(self.spawnLocations[1], self.younglingLairName)
+	local lairID2 = self:spawnLair(self.spawnLocations[2], self.younglingLairName)
 	writeData("sher_kar_event:lair_one", lairID1)
   writeData("sher_kar_event:lair_two", lairID2)
 	self:spawnMinionsOne()
@@ -169,8 +171,8 @@ end
 function SherKarScreenPlay:startPhaseThree(pSherKar, pPlayer)
 	local locOne = self.spawnLocations[3]
   local locTwo = self.spawnLocations[4]
-	local lairID1 = self:spawnLair(locOne)
-	local lairID2 = self:spawnLair(locTwo)
+	local lairID1 = self:spawnLair(locOne, self.adultLairName)
+	local lairID2 = self:spawnLair(locTwo, self.adultLairName)
 
   local minionOne = spawnMobile("lok", self.adultTemplate, locOne[1], locOne[2], locOne[3], locOne[4], locOne[5], locOne[6])
   local minionTwo = spawnMobile("lok", self.adultTemplate, locTwo[1], locTwo[2], locTwo[3], locTwo[4], locTwo[5], locTwo[6])
@@ -189,7 +191,7 @@ function SherKarScreenPlay:startPhaseFour(pSherKar, pPlayer)
   return 0
 end
 
-function SherKarScreenPlay:spawnLair(pLoc)
+function SherKarScreenPlay:spawnLair(pLoc, pName)
 	local spawnedSceneObject = LuaSceneObject(nil)
 	local spawnedPointer = spawnSceneObject("lok", self.lairModal, pLoc[1], pLoc[2], pLoc[3], pLoc[4], pLoc[5], pLoc[6], pLoc[7], pLoc[8])
 
@@ -198,7 +200,7 @@ function SherKarScreenPlay:spawnLair(pLoc)
 		TangibleObject(spawnedPointer):setMaxCondition(self.lairHealth)
 		createObserver(OBJECTDESTRUCTION, "SherKarScreenPlay", "onLairDestroyed", spawnedPointer)
 		spawnedSceneObject:_setObject(spawnedPointer)
-	  spawnedSceneObject:setCustomObjectName("Lair")
+	  spawnedSceneObject:setCustomObjectName(pName)
 
 		return ID
 	end
