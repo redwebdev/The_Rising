@@ -208,17 +208,20 @@ function SherKarScreenPlay:onLairDestroyed(pLairObject, pKiller, nothing)
   end
 	local ID = SceneObject(pLairObject):getObjectID()
   SceneObject(pLairObject):destroyObjectFromWorld()
-	local lair1 = readData("sher_kar_event:lair_one")
-	local lair2 = readData("sher_kar_event:lair_two")
 
-	if (ID == lair1) then
+	if (ID == readData("sher_kar_event:lair_one")) then
 		writeData("sher_kar_event:lair_one", 0)
+
+		return 0
 	end
 
-	if (ID == lair2) then
+	if (ID == readData("sher_kar_event:lair_two")) then
 		writeData("sher_kar_event:lair_two", 0)
+
+		return 0
 	end
 
+	return 0
 end
 
 function SherKarScreenPlay:shuffleSpawns()
