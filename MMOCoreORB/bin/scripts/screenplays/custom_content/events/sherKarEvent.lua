@@ -262,7 +262,8 @@ function SherKarScreenPlay:spawnMinionsTwo()
 end
 
 function SherKarScreenPlay:spawnMinion(pLoc)
-  local youngling = spawnMobile("lok", self.younglingTemplate, pLoc[1], pLoc[2], pLoc[3], pLoc[4], pLoc[5], pLoc[6])
+	-- TODO: Add creature ID to global array for cleanup on reset
+  local youngling = spawnMobile("lok", self.younglingTemplate, 0, pLoc[1], pLoc[2], pLoc[3], 0, 0)
 end
 
 function SherKarScreenPlay:killed()
