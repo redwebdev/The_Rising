@@ -178,6 +178,19 @@ function SherKarScreenPlay:startPhaseThree(pSherKar, pPlayer)
 end
 
 function SherKarScreenPlay:startPhaseFour(pSherKar, pPlayer)
+	info(AiAgent(pSherKar):getTargetOfTargetID())
+	info(SceneObject(pPlayer):getObjectID())
+	--local agent = AiAgent(pSherKar)
+	--agent:clearCombatState(true)
+	--agent:setOblivious()
+	--agent:setNoAiAggro()
+	--agent:setAiTemplate("manualescortwalk") -- Don't move unless patrol point is added to list, walking speed
+	--agent:setFollowState(4) -- Patrolling
+	--agent:stopWaiting()
+	--agent:setWait(0)
+	--agent:setNextPosition(nextPoint[1], nextPoint[2], nextPoint[3], nextPoint[4])
+	--agent:executeBehavior()
+	--createObserver(DESTINATIONREACHED, "SherKarScreenPlay", "giverDespawnDestinationReached", pSherKar)
   local Loc = self.sherKarLocation
   local sherKar = spawnMobile("lok", self.sherKarTwoTemplate, Loc[1], Loc[2], Loc[3], Loc[4], Loc[5], Loc[6])
   createObserver(OBJECTDESTRUCTION, "SherKarScreenPlay", "killed", sherKar)
