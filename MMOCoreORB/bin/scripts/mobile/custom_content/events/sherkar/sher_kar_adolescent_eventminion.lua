@@ -26,7 +26,7 @@ sher_kar_adolescent_eventminion = Creature:new {
 	creatureBitmask = PACK + STALKER + KILLER,
 	optionsBitmask = AIENABLED,
 	diet = HERBIVORE,
-	scale = 0.9,
+	scale = 0.5,
 
 	templates = {"object/mobile/som/sher_kar.iff"},
 	lootGroups = {},

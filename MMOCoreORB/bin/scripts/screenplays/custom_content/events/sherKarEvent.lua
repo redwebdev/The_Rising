@@ -169,16 +169,10 @@ function SherKarScreenPlay:startPhaseTwo(pSherKar, pPlayer)
 end
 
 function SherKarScreenPlay:startPhaseThree(pSherKar, pPlayer)
-	local locOne = self.spawnLocations[3]
-  local locTwo = self.spawnLocations[4]
-	local lairID1 = self:spawnLair(locOne, self.adultLairName)
-	local lairID2 = self:spawnLair(locTwo, self.adultLairName)
-
-  local minionOne = spawnMobile("lok", self.adultTemplate, locOne[1], locOne[2], locOne[3], locOne[4], locOne[5], locOne[6])
-  local minionTwo = spawnMobile("lok", self.adultTemplate, locTwo[1], locTwo[2], locTwo[3], locTwo[4], locTwo[5], locTwo[6])
-  --ObjectManager.withCreatureObject(minionTwo, function(add)
-  -- add:engageCombat(pPlayer)
-  --end)
+	local lairID1 = self:spawnLair(self.spawnLocations[3], self.adultLairName)
+	local lairID2 = self:spawnLair(self.spawnLocations[4], self.adultLairName)
+	self:spawnMinion(self.spawnLocations[3], self.adultTemplate)
+	self:spawnMinion(self.spawnLocations[4], self.adultTemplate)
 
   return 0
 end
@@ -244,7 +238,7 @@ end
 function SherKarScreenPlay:spawnMinionsOne()
   local lair = readData("sher_kar_event:lair_one")
   if (lair ~= 0) then
-    self:spawnMinion(self.spawnLocations[1])
+    self:spawnMinion(self.spawnLocations[1], self.younglingTemplate)
     createEvent(self.younglingWaveTimer, "SherKarScreenPlay", "spawnMinionsOne", "", "")
   end
 
@@ -254,16 +248,16 @@ end
 function SherKarScreenPlay:spawnMinionsTwo()
   local lair = readData("sher_kar_event:lair_two")
   if (lair ~= 0) then
-    self:spawnMinion(self.spawnLocations[2])
+    self:spawnMinion(self.spawnLocations[2], self.younglingTemplate)
     createEvent(self.younglingWaveTimer, "SherKarScreenPlay", "spawnMinionsTwo", "", "")
   end
 
   return 0
 end
 
-function SherKarScreenPlay:spawnMinion(pLoc)
+function SherKarScreenPlay:spawnMinion(pLoc, pTemplate)
 	-- TODO: Add creature ID to global array for cleanup on reset
-  local youngling = spawnMobile("lok", self.younglingTemplate, 0, pLoc[1], pLoc[2], pLoc[3], 0, 0)
+  local minion = spawnMobile("lok", pTemplate, 0, pLoc[1], pLoc[2], pLoc[3], 0, 0)
 end
 
 function SherKarScreenPlay:killed()
