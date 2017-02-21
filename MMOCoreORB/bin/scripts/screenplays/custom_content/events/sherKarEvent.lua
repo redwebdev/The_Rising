@@ -162,8 +162,8 @@ function SherKarScreenPlay:startPhaseTwo(pSherKar, pPlayer)
 	local lairID2 = self:spawnLair(self.spawnLocations[2], self.younglingLairName)
 	writeData("sher_kar_event:lair_one", lairID1)
   writeData("sher_kar_event:lair_two", lairID2)
-	self:spawnMinionsOne()
-	self:spawnMinionsTwo()
+	self:spawnMinionsOne(pPlayer)
+	self:spawnMinionsTwo(pPlayer)
 
   return 0
 end
@@ -171,8 +171,8 @@ end
 function SherKarScreenPlay:startPhaseThree(pSherKar, pPlayer)
 	local lairID1 = self:spawnLair(self.spawnLocations[3], self.adultLairName)
 	local lairID2 = self:spawnLair(self.spawnLocations[4], self.adultLairName)
-	self:spawnMinion(self.spawnLocations[3], self.adultTemplate)
-	self:spawnMinion(self.spawnLocations[4], self.adultTemplate)
+	self:spawnMinion(self.spawnLocations[3], self.adultTemplate, pPlayer)
+	self:spawnMinion(self.spawnLocations[4], self.adultTemplate, pPlayer)
 
   return 0
 end
@@ -235,29 +235,32 @@ function SherKarScreenPlay:shuffleSpawns()
   return 0
 end
 
-function SherKarScreenPlay:spawnMinionsOne()
+function SherKarScreenPlay:spawnMinionsOne(pPlayer)
   local lair = readData("sher_kar_event:lair_one")
   if (lair ~= 0) then
-    self:spawnMinion(self.spawnLocations[1], self.younglingTemplate)
+    self:spawnMinion(self.spawnLocations[1], self.younglingTemplate, pPlayer)
     createEvent(self.younglingWaveTimer, "SherKarScreenPlay", "spawnMinionsOne", "", "")
   end
 
   return 0
 end
 
-function SherKarScreenPlay:spawnMinionsTwo()
+function SherKarScreenPlay:spawnMinionsTwo(pPlayer)
   local lair = readData("sher_kar_event:lair_two")
   if (lair ~= 0) then
-    self:spawnMinion(self.spawnLocations[2], self.younglingTemplate)
+    self:spawnMinion(self.spawnLocations[2], self.younglingTemplate, pPlayer)
     createEvent(self.younglingWaveTimer, "SherKarScreenPlay", "spawnMinionsTwo", "", "")
   end
 
   return 0
 end
 
-function SherKarScreenPlay:spawnMinion(pLoc, pTemplate)
+function SherKarScreenPlay:spawnMinion(pLoc, pTemplate, pPlayer)
 	-- TODO: Add creature ID to global array for cleanup on reset
   local minion = spawnMobile("lok", pTemplate, 0, pLoc[1], pLoc[2], pLoc[3], 0, 0)
+	if (minion ~= nil and SceneObject(minion):isAiAgent() and pPlayer ~= nil) then
+						AiAgent(minion):setDefender(pPlayer)
+	end
 end
 
 function SherKarScreenPlay:killed()
